@@ -57,12 +57,12 @@ def get_user_info(session, user_id):
         age = '0'
 
     gender = user_info.get('sex', 0)
-    if gender == 1:
-        gender = ' женский'
-    elif gender == 2:
-        gender = ' мужской'
-    else:
-        gender = 'Не указан'
+    # if gender == 1:
+    #     gender = ' женский'
+    # elif gender == 2:
+    #     gender = ' мужской'
+    # else:
+    #     gender = 'Не указан'
 
     return name, city, age, gender
 
