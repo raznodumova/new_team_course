@@ -1,3 +1,4 @@
+# да ебаный рот этого казино, как блять запушить?
 import db_functions
 from db_functions import *
 import db_reboot
