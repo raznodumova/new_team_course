@@ -7,6 +7,8 @@ engine = create_engine("postgresql://postgres:5728821q@localhost:5432/VKBOTNEW")
 
 def create_tables():
     return Base.metadata.create_all(engine)
+
+
 def drop_all():
     return Base.metadata.drop_all(engine)
 
@@ -24,6 +26,7 @@ class User(Base):
     ban = relationship("Banned", backref="user", cascade="all, delete")
     like = relationship("Liked", backref="user", cascade="all, delete")
 
+
 class UserPrompt(Base):
     __tablename__ = "user_prompt"
 
@@ -31,6 +34,7 @@ class UserPrompt(Base):
     city_for_search = Column(Text, nullable=False, default="Анк-Морпорк")
     gender_for_search = Column(Text, nullable=False, default="Не указан")
     age_for_search = Column(Integer, nullable=False, default=0)
+
 
 class Liked(Base):
     __tablename__ = "liked"
