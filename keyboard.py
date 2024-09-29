@@ -1,11 +1,15 @@
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
-keyb = VkKeyboard(one_time=False)
+keyb_for_start = VkKeyboard(one_time=False)
+keyb_for_search = VkKeyboard(one_time=False)
+keyb_for_main = VkKeyboard(one_time=False)
 
-keyb.add_button('Начать', color=VkKeyboardColor.PRIMARY)
-keyb.add_button('Следующий', color=VkKeyboardColor.PRIMARY)
-keyb.add_button('Добавить в ЧС', color=VkKeyboardColor.NEGATIVE)
-keyb.add_line()
-keyb.add_button('Добавить в избранное', color=VkKeyboardColor.POSITIVE)
-keyb.add_button('Убрать лайк', color=VkKeyboardColor.SECONDARY)
-keyb.add_button('Выйти', color=VkKeyboardColor.SECONDARY)
+keyb_for_start.add_button('Начать', color=VkKeyboardColor.PRIMARY)
+keyb_for_start.add_button('Начать поиск', color=VkKeyboardColor.SECONDARY)
+
+keyb_for_search.add_button('Следующий', color=VkKeyboardColor.PRIMARY)
+keyb_for_search.add_button('Добавить в ЧС', color=VkKeyboardColor.NEGATIVE)
+keyb_for_search.add_line()
+keyb_for_search.add_button('Добавить в избранное', color=VkKeyboardColor.POSITIVE)
+keyb_for_search.add_button('Убрать лайк', color=VkKeyboardColor.SECONDARY)
+keyb_for_search.add_button('Выйти', color=VkKeyboardColor.SECONDARY)

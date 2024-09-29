@@ -7,7 +7,7 @@ import requests
 import db_functions, db_reboot, db_tables
 from db_functions import add_prompt
 import configparser
-from keyboard import keyb
+from keyboard import keyb_for_search, keyb_for_start
 import random
 
 
@@ -22,7 +22,7 @@ vk = vk_session.get_api()
 longpoll = VkLongPoll(vk_session)
 
 
-def send_message(user_id, message, attachments=None):
+def send_message(user_id, message, keyb=keyb_for_search, attachments=None):
     vk.messages.send(user_id=user_id,
                      message=message,
                      keyboard=keyb.get_keyboard(),
@@ -56,12 +56,12 @@ def get_user_info(session, user_id):
         age = '0'
 
     gender = user_info.get('sex', 0)
-    if gender == 1:
-        gender = ' женский'
-    elif gender == 2:
-        gender = ' мужской'
-    else:
-        gender = 'Не указан'
+    # if gender == 1:
+    #     gender = ' женский'
+    # elif gender == 2:
+    #     gender = ' мужской'
+    # else:
+    #     gender = 'Не указан'
 
     return name, city, age, gender
 
@@ -73,19 +73,19 @@ def request_search_parameters(user_id, send_message):
     # Запрашиваем пол
     send_message(user_id, "Введи пол предполагаемой второй половинки")
     response = wait_for_response(user_id)
-
     while response.lower() not in ['мужской', 'женский']:
         send_message(user_id, "Я знаю только два пола: 'мужской' или 'женский'.")
         response = wait_for_response(user_id)
+        if response == 'мужской':
+            params['gender'] = 2
+        elif response == 'женский':
+            params['gender'] = 1
 
-    params['gender'] = response.lower()
-
-    # Запрашиваем возраст
+    # запрашиваем возраст
     send_message(user_id, "Введи возраст предполагаемой второй половинки")
     response = wait_for_response(user_id)
-
     # Проверяем, является ли ответ числом
-    while not response.isdigit() or int(response) < 0:
+    while not response.isdigit() or int(response) < 18:
         send_message(user_id, "Введи возраст нормально, ну, не дурачок же")
         response = wait_for_response(user_id)
 
@@ -94,23 +94,28 @@ def request_search_parameters(user_id, send_message):
     # Запрашиваем город
     send_message(user_id, "В каком городе ищем?")
     response = wait_for_response(user_id)
-
     # Сохраняем информацию о городе
     params['city'] = response.strip()
 
     # Возвращаем собранные параметры
     # print(params)
+    prompt = UserPrompt(user_id=user_id,
+                        city_for_search=params["city"],
+                        gender_for_search=params["gender"],
+                        age_for_search=params["age"])
+    add_prompt(prompt)
+    print(params.values())
     return params
 
 
 def get_photos(user_session, user_id):
-    photos = user_session.method('photos.get', {
-        'owner_id': user_id,
-        'album_id': 'profile',
-        'count': 100,
-        'extended': 1,
-        'v': 5.199
-    })
+    photos = user_session.photos.get(
+        owner_id=user_id,
+        album_id="profile",
+        count=100,
+        extended=1,
+        v=5.199
+    )
 
     if 'items' not in photos or not photos['items']:
         return []
@@ -131,24 +136,25 @@ def get_photos(user_session, user_id):
 
 
 def find_candidates(user_session, gender, age, city):
-    search_results = session.users.search(
+    search_results = user_session.users.search(
         sex=gender,
         age_from=age,
         age_to=age,
-        city=city,
-        count=100  # количество кандидатов для поиска
-    )
-
+        hometown=city,
+        count=10)  # количество кандидатов для поиска
     candidates = []
     for user in search_results['items']:
-        user_photos = get_photos(user['id'])
+        user_id = user['id']
+        photos = get_photos(user_session, user_id)
+
         candidates.append({
             'user_id': user['id'],
             'name': user['first_name'] + ' ' + user['last_name'],
-            'photos': user_photos
+            'photos': photos
         })
 
     return candidates
+#
 
 
 

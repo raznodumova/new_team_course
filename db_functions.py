@@ -1,4 +1,4 @@
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, PendingRollbackError
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from sqlalchemy.orm import sessionmaker
 from db_tables import engine, User, Liked, UserPrompt, Banned
@@ -37,6 +37,8 @@ def add_prompt(prompt):
 
     except IntegrityError:
         print("Пользователь уже добавил запрос")
+    except PendingRollbackError:
+        print("Пользователь уже добавил запрос")
 
 def update_prompt(user_id, **inf):
     for key, value in inf.items():
@@ -72,6 +74,36 @@ def unban(user_id, user_for_unban):
     s.commit()
     print("Бан Убран")
 
+def find_prompt(id_for_find):
+    try:
+        return s.query(UserPrompt).filter_by(user_id=str(id_for_find)).first().user_id
+    except Exception as e:
+        print(e)
+        return None
+
+def get_prompt(user_id):
+    _ = {}
+    obj = s.query(UserPrompt).filter_by(user_id=str(user_id)).first()
+    _["user_id"] = obj.user_id
+    _["gender"] = obj.gender_for_search
+    _["age"] = obj.age_for_search
+    _["city"] = obj.city_for_search
+    return _
+
 
 if __name__ == "__main__":
     pass
+    # user = User(user_id=1, name="Александр валерьевич", city="москва", age=26, gender=2)
+    # create_user(user)
+    # prompt = UserPrompt(user_id=1, age_for_search=26, city_for_search="москва", gender_for_search=1)
+    # add_prompt(prompt)
+    # s.commit()
+    # print(get_prompt().city_for_search)
+    # print(get_prompt().age_for_search)
+    # print(get_prompt().gender_for_search)
+    if find_prompt(458719538) == str(458719538):
+        print("строка")
+    elif find_prompt(458719538) == int(458719538):
+        print("число")
+    else:
+        print("хз")
