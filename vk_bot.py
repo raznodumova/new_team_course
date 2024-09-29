@@ -29,7 +29,7 @@ def main():
 
             if text == 'начать':
                 msg = 'Привет, братишка! Мы придумали для тебя кнопочки, чтобы тебе было легче оринтироваться'
-                send_message(user_id, msg, keyb_for_start)
+                send_message(user_id, msg)
                 main_user = get_user_info(vk, user_id)
                 user = db_tables.User(user_id=user_id, name=main_user[0], city=main_user[1], age=main_user[2], gender=main_user[3])
                 create_user(user)
@@ -48,7 +48,7 @@ def main():
                 send_message(user_id, msg_two)
 
                 msg_three = 'Вот твои самые классные фотки'
-                send_message(user_id, msg_three, keyboard=keyb_for_start)
+                send_message(user_id, msg_three)
 
                 top_photos = get_photos(user_session, user_id)
                 photo_attachments = []
@@ -60,7 +60,7 @@ def main():
                     attachments = ','.join(photo_attachments)
                     send_message(user_id, msg_three, attachments=attachments)
 
-            if text == 'начать поиск':
+            if text == 'следующий':
                 if find_prompt(user_id) == str(user_id):
                     params = get_prompt(user_id)
                 else:
@@ -73,7 +73,7 @@ def main():
                                         city_for_search=params['city'],
                                         age_for_search=params['age'])
                     add_prompt(prompt)
-                    print("где падает?")
+                    # print("где падает?")
                     # s.commit()
                     # print("проходит?")
 

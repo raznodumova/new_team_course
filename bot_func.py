@@ -4,11 +4,12 @@ from sqlalchemy.orm import session
 from vk_api import VkApiError
 from vk_api.longpoll import VkLongPoll, VkEventType
 import requests
-import db_functions, db_reboot, db_tables
+from db_tables import UserPrompt
 from db_functions import add_prompt
 import configparser
 from keyboard import keyb_for_search, keyb_for_start
 import random
+
 
 
 config = configparser.ConfigParser()
