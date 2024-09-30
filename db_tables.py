@@ -20,7 +20,7 @@ class User(Base):
     name = Column(Text, nullable=False, default=" ")
     city = Column(Text, nullable=False, default="Анк-Морпорк")
     gender = Column(Text, nullable=False, default="Не указан")
-    age = Column(Integer, nullable=False, default=0)
+    age = Column(Text, nullable=False)
 
     prompts = relationship("UserPrompt", backref="user", cascade="all, delete")
     ban = relationship("Banned", backref="user", cascade="all, delete")

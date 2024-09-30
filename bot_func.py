@@ -23,10 +23,10 @@ vk = vk_session.get_api()
 longpoll = VkLongPoll(vk_session)
 
 
-def send_message(user_id, message, keyb=keyb_for_search, attachments=None):
+def send_message(user_id, message, keyboard=None, attachments=None):
     vk.messages.send(user_id=user_id,
                      message=message,
-                     keyboard=keyb.get_keyboard(),
+                     keyboard=keyb_for_start.get_keyboard() if keyboard is None else keyb_for_search.get_keyboard(),
                      random_id=random.getrandbits(64),
                      attachment=attachments)
 
@@ -52,17 +52,11 @@ def get_user_info(session, user_id):
             now_date = datetime.date.today()
             age = now_date.year - datetime.datetime.strptime(bdate, '%d.%m.%Y').year
         else:
-            age = "0"
+            age = bdate if bdate else 'Не указан'
     except Exception:
-        age = '0'
+        age = 'Не указан'
 
     gender = user_info.get('sex', 0)
-    # if gender == 1:
-    #     gender = ' женский'
-    # elif gender == 2:
-    #     gender = ' мужской'
-    # else:
-    #     gender = 'Не указан'
 
     return name, city, age, gender
 
@@ -142,7 +136,9 @@ def find_candidates(user_session, gender, age, city):
         age_from=age,
         age_to=age,
         hometown=city,
-        count=10)  # количество кандидатов для поиска
+        count=100,
+        status='1' or '6',
+        has_photo=1)  # количество кандидатов для поиска
     candidates = []
     for user in search_results['items']:
         user_id = user['id']
@@ -155,7 +151,7 @@ def find_candidates(user_session, gender, age, city):
         })
 
     return candidates
-#
+
 
 
 

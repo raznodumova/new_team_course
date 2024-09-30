@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from db_functions import *
 import db_reboot
 
@@ -12,6 +14,8 @@ from keyboard import keyb_for_start, keyb_for_search
 
 config = configparser.ConfigParser()
 config.read('config.ini')
+
+favorites = []
 
 
 def main():
@@ -43,8 +47,12 @@ def main():
                     else:
                         gender = 'Не указан'
 
+                    return gender
+
                 msg_two = (f'Тебя зовут: {main_user[0]}\n'
-                           f'Ты из: {main_user[1]}\nТвой возраст: {main_user[2]} лет\nТвой пол: {from_01_to_text()}')
+                           f'Ты из: {main_user[1]}\n'
+                           f'Твой возраст: {main_user[2]} \n'
+                           f'Твой пол: {from_01_to_text()}')
                 send_message(user_id, msg_two)
 
                 msg_three = 'Вот твои самые классные фотки'
@@ -60,34 +68,51 @@ def main():
                     attachments = ','.join(photo_attachments)
                     send_message(user_id, msg_three, attachments=attachments)
 
-            if text == 'следующий':
+            if text == 'поиск':
                 if find_prompt(user_id) == str(user_id):
                     params = get_prompt(user_id)
                 else:
                     msg = 'Ну давай'
                     send_message(user_id, msg)
-                    # request_search_parameters(user_id, send_message)
                     params = request_search_parameters(user_id, send_message)
                     prompt = UserPrompt(user_id=user_id,
                                         gender_for_search=params['gender'],
                                         city_for_search=params['city'],
                                         age_for_search=params['age'])
                     add_prompt(prompt)
-                    # print("где падает?")
-                    # s.commit()
-                    # print("проходит?")
 
-                candidates = find_candidates(user_session, gender=params['gender'], city=params['city'], age=params['age'])
-                for person in candidates:
-                    wait_for_response(user_id)
-                    send_message(user_id, f'{person["name"]}  https://vk.com/id{person["user_id"]}')
-                    photo_attachments = []
-                    for photo in person["photos"]:
-                        attachment = f"photo{photo['owner_id']}_{photo['id']}"
-                        photo_attachments.append(attachment)
-                    if photo_attachments:
-                        attachments = ','.join(photo_attachments)
-                        send_message(user_id, "вот фотки", attachments=attachments)
+                candidates = find_candidates(user_session, gender=params['gender'], city=params['city'],
+                                             age=params['age'])
+                msg = ('Чтобы увидеть кандидатов, нажми нажми на кнопку "Следующий"\n'
+                       'Чтобы посмотреть следующего кандидата, нажми еще раз на кнопку "Следующий"\n'
+                       'Чтобы добавить кандидата в ЧС, нажми на кнопку "Добавить в ЧС"\n'
+                       'Чтобы добавить кандидата в избранное, нажми на кнопку "Добавить в избранное"\n')
+                send_message(user_id, msg, keyboard=keyb_for_start.get_keyboard())
+
+                if wait_for_response(user_id) == 'Следующий':
+                    for person in candidates:
+                        wait_for_response(user_id)
+                        send_message(user_id, f'{person["name"]}  https://vk.com/id{person["user_id"]}',
+                                     keyboard=keyb_for_search.get_keyboard())
+                        favorites = None
+                        favorites = [person["user_id"]]
+                        pprint(favorites)
+                        photo_attachments = []
+                        for photo in person["photos"]:
+                            attachment = f"photo{photo['owner_id']}_{photo['id']}"
+                            photo_attachments.append(attachment)
+                        if photo_attachments:
+                            attachments = ','.join(photo_attachments)
+                            send_message(user_id, "вот фотки", attachments=attachments,
+                                         keyboard=keyb_for_search.get_keyboard())
+                        if person == candidates[-1]:
+                            send_message(user_id, 'Это последний кандидат', keyboard=keyb_for_search.get_keyboard())
+
+                if wait_for_response(user_id) == 'Добавить в Избранное':
+                    fav = Liked(user_id=user_id, liked_id=candidates[0]["user_id"])
+                    like(user_id, candidates[0]["user_id"])
+                    print(fav)
+
 
 
 if __name__ == '__main__':
