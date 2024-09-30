@@ -5,14 +5,10 @@ from db_tables import engine, User, Liked, UserPrompt, Banned
 
 s = sessionmaker(engine)()
 
-def create_user(user):
-    try:
-        s.add(user)
-        s.commit()
-        print("Пользователь Добавлен")
-
-    except IntegrityError:
-        print("Такой пользователь уже существует")
+def create_user(user) -> str:
+    s.add(user)
+    s.commit()
+    return "Пользователь Добавлен"
 
 def update_user(user_id, **inf):
     for key, value in inf.items():
@@ -20,25 +16,23 @@ def update_user(user_id, **inf):
         print(f"строка {key} обновлена. новое значение {value}")
         s.commit()
 
-def delete_user(user_id):
+def delete_user(user_id) -> str:
     try:
         user_to_delete = s.query(User).filter_by(user_id=user_id).first()
         s.delete(user_to_delete)
         s.commit()
-        print("Пользователь удален")
+        return "Пользователь удален"
     except UnmappedInstanceError:
-        print("такой пользователь не существует")
+        return "такой пользователь не существует"
 
-def add_prompt(prompt):
+def add_prompt(prompt) -> str:
     try:
         s.add(prompt)
         s.commit()
-        print("Запрос добавлен")
-
-    except IntegrityError:
-        print("Пользователь уже добавил запрос")
-    except PendingRollbackError:
-        print("Пользователь уже добавил запрос")
+        return "Запрос добавлен"
+    except Exception as e:
+        print(e)
+        return "Пользователь уже добавил запрос"
 
 def update_prompt(user_id, **inf):
     for key, value in inf.items():
@@ -74,36 +68,57 @@ def unban(user_id, user_for_unban):
     s.commit()
     print("Бан Убран")
 
-def find_prompt(id_for_find):
+def is_prompt_exist(id_for_find) -> bool:
     try:
-        return s.query(UserPrompt).filter_by(user_id=str(id_for_find)).first().user_id
+        assert s.query(UserPrompt).filter_by(user_id=str(id_for_find)).first().user_id
+        print("запрос есть")
+        return True
     except Exception as e:
+        print("запроса нет")
         print(e)
-        return None
+        return False
 
-def get_prompt(user_id):
+def get_prompt(user_id) -> dict:
     _ = {}
-    obj = s.query(UserPrompt).filter_by(user_id=str(user_id)).first()
+    obj = s.query(UserPrompt).filter_by(user_id=str(user_id)).one()
     _["user_id"] = obj.user_id
     _["gender"] = obj.gender_for_search
-    _["age"] = obj.age_for_search
+    _["age"] = int(obj.age_for_search)
     _["city"] = obj.city_for_search
     return _
+
+def is_user_exist(user_for_check) -> bool:
+    try:
+        assert s.query(User).filter_by(user_id=str(user_for_check)).first().user_id
+        print("пользователь есть")
+        return True
+    except Exception as e:
+        print("пользователя нет")
+        print(e)
+        return False
+
+def get_user_inf_from_db(user_id) -> dict:
+    obj = s.query(User).filter_by(user_id=str(user_id)).one()
+    return {
+        "user_id": obj.user_id,
+        "name": obj.name,
+        "age": obj.age,
+        "gender": obj.gender,
+        "city": obj.city
+    }
 
 
 if __name__ == "__main__":
     pass
-    # user = User(user_id=1, name="Александр валерьевич", city="москва", age=26, gender=2)
-    # create_user(user)
+    # print(get_user_inf_from_db(458719538))
+    # print(is_prompt_exist(458719538))
+    # print(is_user_exist(6))
+    # # user = User(user_id=458719538, name="Александр валерьевич", city="москва", age=26, gender=2)
+    # # create_user(user)
+    # print(is_user_exist(458719538))
     # prompt = UserPrompt(user_id=1, age_for_search=26, city_for_search="москва", gender_for_search=1)
     # add_prompt(prompt)
     # s.commit()
     # print(get_prompt().city_for_search)
     # print(get_prompt().age_for_search)
     # print(get_prompt().gender_for_search)
-    if find_prompt(458719538) == str(458719538):
-        print("строка")
-    elif find_prompt(458719538) == int(458719538):
-        print("число")
-    else:
-        print("хз")

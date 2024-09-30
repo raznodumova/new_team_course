@@ -32,7 +32,7 @@ class UserPrompt(Base):
 
     user_id = Column(Text, ForeignKey("user.user_id"), nullable=False, primary_key=True)
     city_for_search = Column(Text, nullable=False, default="Анк-Морпорк")
-    gender_for_search = Column(Text, nullable=False, default="Не указан")
+    gender_for_search = Column(Integer, nullable=False, default=0)
     age_for_search = Column(Integer, nullable=False, default=0)
 
 
