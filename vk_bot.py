@@ -73,7 +73,6 @@ def main():
                 handle_search_command(user_id, user_session, send_message)
 
             elif text == 'Добавить в Избранное':
-                print('CУКА')
                 if 0 <= current_candidate_index < len(candidates):
                     candidate_to_like = candidates[current_candidate_index]  # Получаем текущего кандидата
                     fav = Liked(user_id=user_id, liked_id=candidate_to_like["user_id"])  # Создаем запись для избранного
