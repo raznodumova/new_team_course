@@ -16,7 +16,6 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 
-
 def main():
     vk_session = vk_api.VkApi(token=config['VK']['group_token'])
     longpoll = VkLongPoll(vk_session)
