@@ -4,8 +4,10 @@ from sqlalchemy.orm import session
 from vk_api import VkApiError
 from vk_api.longpoll import VkLongPoll, VkEventType
 import requests
+
+import db_tables
 from db_tables import UserPrompt
-from db_functions import add_prompt
+from db_functions import add_prompt, create_user, s
 import configparser
 from keyboard import keyb_for_search, keyb_for_start
 import random
@@ -15,8 +17,6 @@ import random
 config = configparser.ConfigParser()
 config.read('config.ini')
 token = config['VK']['group_token']
-
-# TOKEN = 'vk1.a.pt524_volH1KULjGa3epiXZzczIcveDn8AbW0zm8l-91aowhUzuLBg5gVLFrdbnoItfRHm_BEV2YjtwwQlygElRUfAKKSOfcnM9ib7HeUn3Y9P4c3AuMUNIC7YRIMdKy2otm3eeK0jzWdsU9urRPt5I5mXvl4jK0txwdD6PoMllNk4mp8befU3kXMO6CmknhS4WzOxitBxFuyJ45Ik8F3A'
 
 vk_session = vk_api.VkApi(token=token)
 vk = vk_session.get_api()
@@ -153,7 +153,39 @@ def find_candidates(user_session, gender, age, city):
     return candidates
 
 
+def handle_start_command(user_id, vk, user_session):
+    msg = 'Привет, братишка! Мы придумали для тебя кнопочки, чтобы тебе было легче ориентироваться'
+    send_message(user_id, msg)
 
+    main_user = get_user_info(vk, user_id)
+    user = db_tables.User(user_id=user_id, name=main_user[0], city=main_user[1], age=main_user[2], gender=main_user[3])
+
+    create_user(user)
+    s.commit()
+
+    def from_01_to_text(gender_code):
+        if gender_code == 1:
+            return 'женский'
+        elif gender_code == 2:
+            return 'мужской'
+        else:
+            return 'Не указан'
+
+    msg_two = (f'Тебя зовут: {main_user[0]}\n'
+               f'Ты из: {main_user[1]}\n'
+               f'Твой возраст: {main_user[2]} \n'
+               f'Твой пол: {from_01_to_text(main_user[3])}')
+    send_message(user_id, msg_two)
+
+    msg_three = 'Вот твои самые классные фотки'
+    send_message(user_id, msg_three)
+
+    top_photos = get_photos(user_session, user_id)
+    photo_attachments = [f"photo{photo['owner_id']}_{photo['id']}" for photo in top_photos]
+
+    if photo_attachments:
+        attachments = ','.join(photo_attachments)
+        send_message(user_id, msg_three, attachments=attachments)
 
 
 
