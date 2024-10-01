@@ -7,7 +7,7 @@ import requests
 
 import db_tables
 from db_tables import UserPrompt
-from db_functions import add_prompt, create_user, s
+from db_functions import add_prompt, create_user, s, find_prompt, get_prompt
 import configparser
 from keyboard import keyb_for_search, keyb_for_start
 import random
@@ -186,6 +186,56 @@ def handle_start_command(user_id, vk, user_session):
     if photo_attachments:
         attachments = ','.join(photo_attachments)
         send_message(user_id, msg_three, attachments=attachments)
+
+
+def handle_search_command(user_id, user_session, send_message):
+    if find_prompt(user_id) == str(user_id):
+        params = get_prompt(user_id)
+    else:
+        msg = 'Ну давай'
+        send_message(user_id, msg)
+        params = request_search_parameters(user_id, send_message)
+        prompt = UserPrompt(user_id=user_id,
+                            gender_for_search=params['gender'],
+                            city_for_search=params['city'],
+                            age_for_search=params['age'])
+        add_prompt(prompt)
+
+    candidates = find_candidates(user_session, gender=params['gender'], city=params['city'], age=params['age'])
+
+    msg = ('Чтобы посмотреть следующего кандидата, нажми кнопку "Следующий"\n'
+           'Чтобы добавить кандидата в ЧС, нажми на кнопку "Добавить в ЧС"\n'
+           'Чтобы добавить кандидата в избранное, нажми на кнопку "Добавить в избранное"\n')
+    send_message(user_id, msg, keyboard=keyb_for_start.get_keyboard())
+
+    current_candidate_index = 0
+
+    while current_candidate_index < len(candidates):
+        person = candidates[current_candidate_index]
+        send_message(user_id, f'{person["name"]}  https://vk.com/id{person["user_id"]}',
+                     keyboard=keyb_for_search.get_keyboard())
+
+        # Обработка добавления фотографий
+        photo_attachments = []
+        for photo in person["photos"]:
+            attachment = f"photo{photo['owner_id']}_{photo['id']}"
+            photo_attachments.append(attachment)
+
+        if photo_attachments:
+            attachments = ','.join(photo_attachments)
+            send_message(user_id, "Вот фотки", attachments=attachments,
+                         keyboard=keyb_for_search.get_keyboard())
+
+        us_msg = wait_for_response(user_id)
+
+        # Обработка нажатий кнопок
+        if us_msg == 'Следующий':
+            current_candidate_index += 1  # Переход к следующему кандидату
+            print(current_candidate_index)
+
+            if current_candidate_index >= len(candidates):
+                send_message(user_id, 'Это последний кандидат', keyboard=keyb_for_search.get_keyboard())
+                current_candidate_index = len(candidates) - 1  # Остаёмся на последнем кандидате
 
 
 
