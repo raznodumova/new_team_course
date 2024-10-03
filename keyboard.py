@@ -1,20 +1,18 @@
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
-keyb_for_start = VkKeyboard(one_time=True)
-keyb_for_search = VkKeyboard(one_time=True)
-keyb_user_profile = VkKeyboard(one_time=True)
-keyb_gender_choise = VkKeyboard(one_time=True)
-keyb_go = VkKeyboard(one_time=True)
-keyb_lets_search = VkKeyboard(one_time=True)
-keyb_for_city = VkKeyboard(one_time=True)
-
+keyb_for_start = VkKeyboard(one_time=True, inline=False)
+keyb_for_search = VkKeyboard(one_time=True, inline=False)
+keyb_user_profile = VkKeyboard(one_time=True, inline=False)
+keyb_gender_choise = VkKeyboard(one_time=True, inline=False)
+keyb_go = VkKeyboard(one_time=True, inline=False)
+keyb_lets_search = VkKeyboard(one_time=False)
+keyb_for_city = VkKeyboard(one_time=True, inline=False)
+empty_keybord = VkKeyboard.get_empty_keyboard()
 
 keyb_for_city.add_button("Москва", color=VkKeyboardColor.POSITIVE)
 keyb_for_city.add_button("Сызрань", color=VkKeyboardColor.POSITIVE)
 keyb_for_city.add_line()
 keyb_for_city.add_button("Саратов", color=VkKeyboardColor.POSITIVE)
-keyb_for_city.add_button("Оренбург", color=VkKeyboardColor.POSITIVE)
-
 
 keyb_lets_search.add_button("К поиску", color=VkKeyboardColor.POSITIVE)
 
@@ -30,7 +28,7 @@ keyb_user_profile.add_button("Удалить анкету", color=VkKeyboardColo
 keyb_for_start.add_button('Начать', color=VkKeyboardColor.PRIMARY)
 keyb_for_start.add_button("Выход", color=VkKeyboardColor.SECONDARY)
 
-keyb_go.add_button("ГО", color=VkKeyboardColor.POSITIVE)
+keyb_go.add_button("ДА", color=VkKeyboardColor.POSITIVE)
 
 keyb_for_search.add_button('Следующий', color=VkKeyboardColor.PRIMARY)
 keyb_for_search.add_button('Добавить в избранное', color=VkKeyboardColor.POSITIVE)

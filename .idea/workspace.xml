@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cab7440b-75dc-4de2-8b1e-4536a5b4acdc" name="Changes" comment="photos and names ready">
+    <list default="true" id="cab7440b-75dc-4de2-8b1e-4536a5b4acdc" name="Changes" comment="pochemyto ne pushitsa">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bot_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot_func.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/config.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/db_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db_tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/db_tables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keyboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/phrase_dict.py" beforeDir="false" afterPath="$PROJECT_DIR$/phrase_dict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vk_bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/vk_bot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +36,8 @@
   "keyToString": {
     "Python.bot_func.executor": "Run",
     "Python.db_functions.executor": "Run",
+    "Python.db_reboot.executor": "Run",
+    "Python.main.executor": "Run",
     "Python.test.executor": "Run",
     "Python.vk_bot.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -121,11 +128,20 @@
       <option name="project" value="LOCAL" />
       <updated>1727518070166</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="pochemyto ne pushitsa">
+      <option name="closed" value="true" />
+      <created>1727695671010</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1727695671010</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="photos and names ready" />
-    <option name="LAST_COMMIT_MESSAGE" value="photos and names ready" />
+    <MESSAGE value="pochemyto ne pushitsa" />
+    <option name="LAST_COMMIT_MESSAGE" value="pochemyto ne pushitsa" />
   </component>
 </project>

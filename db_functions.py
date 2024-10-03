@@ -74,7 +74,7 @@ def is_prompt_exist(id_for_find) -> bool:
         print("запрос есть")
         return True
     except Exception as e:
-        print("запроса нет")
+        print("поискового запроса нет в бд")
         print(e)
         return False
 
@@ -85,11 +85,12 @@ def get_prompt(user_id) -> dict:
     _["gender"] = obj.gender_for_search
     _["age"] = int(obj.age_for_search)
     _["city"] = obj.city_for_search
+    _["offset"] = obj.offset
     return _
 
-def is_user_exist(user_for_check) -> bool:
+def is_user_exist(user_for_check:int) -> bool:
     try:
-        assert s.query(User).filter_by(user_id=str(user_for_check)).first().user_id
+        assert s.query(User).filter_by(user_id=str(user_for_check)).first()
         print("пользователь есть")
         return True
     except Exception as e:
@@ -97,8 +98,8 @@ def is_user_exist(user_for_check) -> bool:
         print(e)
         return False
 
-def get_user_inf_from_db(user_id) -> dict:
-    obj = s.query(User).filter_by(user_id=str(user_id)).one()
+def get_user_inf_from_db(*args) -> dict:
+    obj = s.query(User).filter_by(user_id=str(*args)).one()
     return {
         "user_id": obj.user_id,
         "name": obj.name,
@@ -107,9 +108,15 @@ def get_user_inf_from_db(user_id) -> dict:
         "city": obj.city
     }
 
+def increase_offset_in_db(int_):
+    _ = s.get(UserPrompt, "458719538")
+    _.offset = int_
+    s.commit()
+
 
 if __name__ == "__main__":
     pass
+    # print(get_user_inf_from_db("458719538"))
     # print(get_user_inf_from_db(458719538))
     # print(is_prompt_exist(458719538))
     # print(is_user_exist(6))

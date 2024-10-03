@@ -34,7 +34,7 @@ class UserPrompt(Base):
     city_for_search = Column(Text, nullable=False, default="Анк-Морпорк")
     gender_for_search = Column(Integer, nullable=False, default=0)
     age_for_search = Column(Integer, nullable=False, default=0)
-
+    offset = Column(Integer, nullable=False, default=0)
 
 class Liked(Base):
     __tablename__ = "liked"

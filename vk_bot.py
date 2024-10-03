@@ -1,27 +1,33 @@
 # да ебаный рот этого казино, как блять запушить?
 import vk_api
-from vk_api.longpoll import VkLongPoll, VkEventType
+from bot_func import VkBotLongPoll, VkBotEventType
 import configparser
 from phrase_dict import phrase_dict
+from bot_func import BotFunc, longpoll, group_session
 from keyboard import keyb_for_start
 from random import getrandbits
 
 config = configparser.ConfigParser()
 config.read('config.ini')
-group_session = vk_api.VkApi(token=config['VK']['group_token'])
-longpoll = VkLongPoll(group_session)
 
 def main():
     for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            user_id = event.user_id
-            text = event.text
+        if event.type == VkBotEventType.MESSAGE_NEW:
+            user_id = event.obj["message"]["from_id"]
+            text = str(event.obj["message"]["text"])
+            print(text)
+            print(user_id)
             try:
-                phrase_dict.get(text)(user_id)
-            except:
+                new_user = BotFunc(user_id)
+                phrase_dict.get(text.lower())(new_user, user_id)
+
+            except Exception as e:
+                print(e)
+                print("не понятное сообщение")
                 group_session.get_api().messages.send(user_id=user_id,
                                                       message="Я вас не понял. Повторите пожалуйста",
-                                                      keyboard=keyb_for_start,
+                                                      keyboard=keyb_for_start.get_keyboard(),
+                                                      inline=False,
                                                       random_id=getrandbits(64),
                                                       attachment=None)
 
