@@ -154,14 +154,13 @@ class BotFunc:
         """Тут мы выдаем кандидата по одному и удаяем его из списка"""
         try:
             if len(candidates.get(f"{uid}")) < 2:  # если список заканчивается, мы наполняем его и продолжаем листать
-                print("отработала длинна списка")  # можно допилить асинхронность сюда, и наполнять список "бесшовно"
-                print(candidates)
+                print(candidates)  # можно допилить асинхронность сюда, и наполнять список "бесшовно"
                 self.send_message(message="ищу, кто вам подходит лучше всего?", keyb=keyb_go.get_keyboard())
                 self.search()
                 self.next_(uid)
             else:
-                person = candidates.get(f"{uid}").pop(0)
-                if db_functions.is_banned_inDB(uid=uid, id_for_check=person["user_id"]) is False:  # если кандидат в бане - идем дальше
+                person = candidates.get(f"{uid}").pop(0)  # тут мы пропускаем кандидата если он в бане
+                if db_functions.is_banned_inDB(uid=uid, id_for_check=person["user_id"]) is False:
                     db_functions.increase_offset_in_db(
                         db_functions.get_prompt(uid)["offset"] + 1)  # увеличиваем смещение поиска
                     msg = f'{person["name"]}  https://vk.com/id{person["user_id"]}'
@@ -169,25 +168,23 @@ class BotFunc:
                     self.send_message(message=msg, keyb=keyb_for_search.get_keyboard(), attachments=attachments)
                 else:
                     print("пропустили забаненного")
+                    db_functions.increase_offset_in_db(db_functions.get_prompt(uid)["offset"] + 1)
                     self.next_(uid)
         except Exception as e:
             print(e)
             # self.send_message(message="приступим?", keyb=keyb_go.get_keyboard())
             self.search()
             self.next_(uid)
-            print("отработал ексепт на next_")
             # self.wait_for_response()
 
-
-
     def change_user_inf(self, *args):
-        self.send_message("я пока такого не знаю", keyb_for_start.get_keyboard())
+        self.send_message("я пока не знаю этой команды", keyb_user_profile.get_keyboard())
 
     def change_user_prompt(self, *args):
-        self.send_message("я пока такого не знаю", keyb_for_start.get_keyboard())
+        self.send_message("я пока не знаю этой команды", keyb_user_profile.get_keyboard())
 
     def first_visit(self, uid):
-        msg = 'Привет! Рады видеть. Мы придумали для тебя кнопочки, чтобы тебе было легче оринтироваться'
+        msg = 'Привет! Рады видеть. Мы придумали для тебя кнопочки, чтоб нам было проще друг друга понимать'
         self.send_message(msg, keyb=keyb_for_start.get_keyboard())
 
     def from_01_to_text(self, int_) -> str:
@@ -247,18 +244,26 @@ class BotFunc:
 
     def see_all_liked_people(self, uid):  # выдаем всех избранных разом
         # надо будет сделать как то по другому, вдруг у человека 500 избранных
+        if len(self.liked_people(uid)) < 1:
+            self.send_message("вы еще никого не лайкали", keyb=keyb_user_profile.get_keyboard())
         for people in self.liked_people(uid=uid):
             name = f'{people.get("name")}'
             url = f'https://vk.com/id{people.get("user_id")}'
             atach = f'{people.get("photo")}'
             self.send_message(f"{name} {url}", keyb=keyb_user_profile.get_keyboard(), attachments=atach)
 
-    def best(self, uid):
-        pass
+    def clear_favor(self, uid):
+        favors = db_functions.get_likes_list(uid)
+        if len(favors) < 1:
+            self.send_message(f"Лайков нет", keyb=keyb_user_profile.get_keyboard())
+        else:
+            for people in favors:
+                user_for_unlike = people.get("id")
+                db_functions.unlike(user_id=uid, user_for_unlike=user_for_unlike)
+                self.send_message(f"Лайки убраны", keyb=keyb_user_profile.get_keyboard())
 
     def ban(self, uid):
         candidate_id = candidates[f"{uid}"][0]["user_id"]
         db_functions.ban(user_id=uid, user_for_ban=candidate_id)
         self.send_message("Вы больше не увидите этого человека", keyb=empty_keybord)
         self.next_(uid)
-

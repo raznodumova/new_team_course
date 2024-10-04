@@ -57,7 +57,8 @@ def like(user_id, liked_user_id, name, photo):
         return False
 
 def unlike(user_id, user_for_unlike):
-    s.delete(Liked(user_id=user_id, liked_user_id=user_for_unlike))
+    a = s.query(Liked).filter_by(user_id=str(user_id), liked_user_id=str(user_for_unlike)).first()
+    s.delete(a)
     s.commit()
     print("Лайк убран")
 
@@ -131,18 +132,16 @@ def get_likes_list(uid):
     return likes_list
 
 def is_banned_inDB(uid, id_for_check) -> bool:
-    try:
-        if s.query(Banned).filter_by(user_id=str(uid), banned_user_id=str(id_for_check)).first() is None:
-            return False
-        else:
-            print(f"пользователь {id_for_check} в бане")
-            return True
-    except Exception as e:
-        print(e)
+    a = s.query(Banned).filter_by(user_id=str(uid), banned_user_id=str(id_for_check)).all()
+    print(a)
+    if len(a) > 0:
+        return True
+    else:
         return False
 
 
 if __name__ == "__main__":
     pass
-    # ban(458719538, 472579328)
+    # unlike(458719538, 681331570)
+    # is_banned_inDB(458719538, 472579328)
     # print(is_banned_inDB(uid=458719538, id_for_check=472579328))

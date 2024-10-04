@@ -26,7 +26,7 @@ phrase_dict["избранные"] = bot_func.BotFunc.liked_people
 
 phrase_dict["посмотреть всех"] = bot_func.BotFunc.see_all_liked_people
 
-phrase_dict["посмотреть лучшего"] = bot_func.BotFunc.best
+phrase_dict["убрать все лайки"] = bot_func.BotFunc.clear_favor
 
 phrase_dict["вернуться в профиль"] = bot_func.BotFunc.user_inf
 

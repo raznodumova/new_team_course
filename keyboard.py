@@ -11,7 +11,7 @@ keyb_for_likes = VkKeyboard(one_time=True, inline=False)
 empty_keybord = VkKeyboard.get_empty_keyboard()
 
 keyb_for_likes.add_button("Посмотреть всех", color=VkKeyboardColor.POSITIVE)
-keyb_for_likes.add_button("Посмотреть лучшего", color=VkKeyboardColor.PRIMARY)
+keyb_for_likes.add_button("Убрать все лайки", color=VkKeyboardColor.PRIMARY)
 keyb_for_likes.add_line()
 keyb_for_likes.add_button("Мой профиль", color=VkKeyboardColor.SECONDARY)
 
