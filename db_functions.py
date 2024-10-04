@@ -130,6 +130,19 @@ def get_likes_list(uid):
         likes_list.append(user)
     return likes_list
 
+def is_banned_inDB(uid, id_for_check) -> bool:
+    try:
+        if s.query(Banned).filter_by(user_id=str(uid), banned_user_id=str(id_for_check)).first() is None:
+            return False
+        else:
+            print(f"пользователь {id_for_check} в бане")
+            return True
+    except Exception as e:
+        print(e)
+        return False
+
 
 if __name__ == "__main__":
     pass
+    # ban(458719538, 472579328)
+    # print(is_banned_inDB(uid=458719538, id_for_check=472579328))

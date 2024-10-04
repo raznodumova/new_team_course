@@ -29,3 +29,5 @@ phrase_dict["посмотреть всех"] = bot_func.BotFunc.see_all_liked_pe
 phrase_dict["посмотреть лучшего"] = bot_func.BotFunc.best
 
 phrase_dict["вернуться в профиль"] = bot_func.BotFunc.user_inf
+
+phrase_dict["мой профиль"] = bot_func.BotFunc.user_inf

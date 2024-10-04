@@ -156,21 +156,29 @@ class BotFunc:
             if len(candidates.get(f"{uid}")) < 2:  # если список заканчивается, мы наполняем его и продолжаем листать
                 print("отработала длинна списка")  # можно допилить асинхронность сюда, и наполнять список "бесшовно"
                 print(candidates)
+                self.send_message(message="ищу, кто вам подходит лучше всего?", keyb=keyb_go.get_keyboard())
                 self.search()
-                self.send_message(message="нужны еще варианты?", keyb=keyb_go.get_keyboard())
-                self.wait_for_response()
+                self.next_(uid)
+            else:
+                person = candidates.get(f"{uid}").pop(0)
+                if db_functions.is_banned_inDB(uid=uid, id_for_check=person["user_id"]) is False:  # если кандидат в бане - идем дальше
+                    db_functions.increase_offset_in_db(
+                        db_functions.get_prompt(uid)["offset"] + 1)  # увеличиваем смещение поиска
+                    msg = f'{person["name"]}  https://vk.com/id{person["user_id"]}'
+                    attachments = person["photos"]
+                    self.send_message(message=msg, keyb=keyb_for_search.get_keyboard(), attachments=attachments)
+                else:
+                    print("пропустили забаненного")
+                    self.next_(uid)
         except Exception as e:
             print(e)
-            self.send_message(message="приступим?", keyb=keyb_go.get_keyboard())
+            # self.send_message(message="приступим?", keyb=keyb_go.get_keyboard())
             self.search()
-            print("отработал ексепт")
-            self.wait_for_response()
+            self.next_(uid)
+            print("отработал ексепт на next_")
+            # self.wait_for_response()
 
-        person = candidates.get(f"{uid}").pop(0)
-        db_functions.increase_offset_in_db(db_functions.get_prompt(uid)["offset"] + 1)  # увеличиваем смещение поиска
-        msg = f'{person["name"]}  https://vk.com/id{person["user_id"]}'
-        attachments = person["photos"]
-        self.send_message(message=msg, keyb=keyb_for_search.get_keyboard(),  attachments=attachments)
+
 
     def change_user_inf(self, *args):
         self.send_message("я пока такого не знаю", keyb_for_start.get_keyboard())
@@ -248,5 +256,9 @@ class BotFunc:
     def best(self, uid):
         pass
 
-    def ban(self):
-        pass
+    def ban(self, uid):
+        candidate_id = candidates[f"{uid}"][0]["user_id"]
+        db_functions.ban(user_id=uid, user_for_ban=candidate_id)
+        self.send_message("Вы больше не увидите этого человека", keyb=empty_keybord)
+        self.next_(uid)
+
