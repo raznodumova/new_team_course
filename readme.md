@@ -28,8 +28,11 @@
 ## Используемые технологии
 
 - **Python**
+- 
 - **SQL ALCHEMY ORM** - для взаимодействия с БД.
+- 
 - **PostgreSQL** — Для хранения информации о пользователях.
+- 
 - **VK_API** — Библиотека для работы с VK.
 
 
@@ -38,7 +41,7 @@
 1. Клонируйте репозиторий:
 
     ```bash
-    git clone https://github.com/
+    git clone https://github.com/raznodumova/new_team_course/blob/master
     ```
 
 2. Установите зависимости:
