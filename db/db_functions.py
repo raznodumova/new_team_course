@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from sqlalchemy.orm import sessionmaker
-from db_tables import engine, User, Liked, UserPrompt, Banned
+from db.db_tables import engine, User, Liked, UserPrompt, Banned
 
 s = sessionmaker(engine)()
 
@@ -141,7 +141,6 @@ def is_banned_inDB(uid, id_for_check) -> bool:
 
 
 if __name__ == "__main__":
-    pass
     # unlike(458719538, 681331570)
-    # is_banned_inDB(458719538, 472579328)
+    ban(458719538, 472579328)
     # print(is_banned_inDB(uid=458719538, id_for_check=472579328))

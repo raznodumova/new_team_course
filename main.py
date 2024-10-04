@@ -1,8 +1,8 @@
 from bot_func import VkBotEventType
 import configparser
-from phrase_dict import phrase_dict
+from help_files.phrase_dict import phrase_dict
 from bot_func import BotFunc, longpoll, group_session
-from keyboard import keyb_for_start
+from help_files.keyboard import keyb_for_start
 from random import getrandbits
 
 config = configparser.ConfigParser()

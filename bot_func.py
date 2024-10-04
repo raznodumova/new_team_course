@@ -1,9 +1,8 @@
 import configparser
 from datetime import datetime, date
 from random import getrandbits
-import db_functions
-import db_tables
-from keyboard import *
+from db import db_tables, db_functions
+from help_files.keyboard import *
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
