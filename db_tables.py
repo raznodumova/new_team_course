@@ -16,7 +16,7 @@ def drop_all():
 class User(Base):
     __tablename__ = "user"
 
-    user_id = Column(Text, primary_key=True)
+    user_id = Column(Integer, primary_key=True)
     name = Column(Text, nullable=False, default=" ")
     city = Column(Text, nullable=False, default="Анк-Морпорк")
     gender = Column(Text, nullable=False, default="Не указан")
@@ -30,7 +30,7 @@ class User(Base):
 class UserPrompt(Base):
     __tablename__ = "user_prompt"
 
-    user_id = Column(Text, ForeignKey("user.user_id"), nullable=False, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False, primary_key=True)
     city_for_search = Column(Text, nullable=False, default="Анк-Морпорк")
     gender_for_search = Column(Integer, nullable=False, default=0)
     age_for_search = Column(Integer, nullable=False, default=0)
@@ -39,7 +39,7 @@ class UserPrompt(Base):
 class Liked(Base):
     __tablename__ = "liked"
 
-    user_id = Column(Text, ForeignKey("user.user_id"), primary_key=True, nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id"), primary_key=True, nullable=False)
     liked_user_id = Column(Text, primary_key=True, nullable=False)
     name = Column(Text)
     photo = Column(Text)
@@ -50,7 +50,7 @@ class Liked(Base):
 class Banned(Base):
     __tablename__ = "banned"
 
-    user_id = Column(Text, ForeignKey("user.user_id"), primary_key=True, nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id"), primary_key=True, nullable=False)
     banned_user_id = Column(Text, primary_key=True, nullable=False)
 
     PrimaryKeyConstraint("user_id", "banned_user_id", name="uq_ban")

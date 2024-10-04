@@ -57,7 +57,7 @@ def like(user_id, liked_user_id, name, photo):
         return False
 
 def unlike(user_id, user_for_unlike):
-    a = s.query(Liked).filter_by(user_id=str(user_id), liked_user_id=str(user_for_unlike)).first()
+    a = s.query(Liked).filter_by(user_id=user_id, liked_user_id=user_for_unlike).first()
     s.delete(a)
     s.commit()
     print("Лайк убран")
@@ -78,7 +78,7 @@ def unban(user_id, user_for_unban):
 
 def is_prompt_exist(id_for_find) -> bool:
     try:
-        assert s.query(UserPrompt).filter_by(user_id=str(id_for_find)).first().user_id
+        assert s.query(UserPrompt).filter_by(user_id=id_for_find).first().user_id
         print("запрос есть")
         return True
     except Exception as e:
@@ -88,7 +88,7 @@ def is_prompt_exist(id_for_find) -> bool:
 
 def get_prompt(user_id) -> dict:
     _ = {}
-    obj = s.query(UserPrompt).filter_by(user_id=str(user_id)).one()
+    obj = s.query(UserPrompt).filter_by(user_id=user_id).one()
     _["user_id"] = obj.user_id
     _["gender"] = obj.gender_for_search
     _["age"] = int(obj.age_for_search)
@@ -98,7 +98,7 @@ def get_prompt(user_id) -> dict:
 
 def is_user_exist(user_for_check: int) -> bool:
     try:
-        assert s.query(User).filter_by(user_id=str(user_for_check)).first()
+        assert s.query(User).filter_by(user_id=user_for_check).first()
         print("пользователь есть")
         return True
     except Exception as e:
@@ -106,8 +106,8 @@ def is_user_exist(user_for_check: int) -> bool:
         print(e)
         return False
 
-def get_user_inf_from_db(*args) -> dict:
-    obj = s.query(User).filter_by(user_id=str(*args)).one()
+def get_user_inf_from_db(uid) -> dict:
+    obj = s.query(User).filter_by(user_id=uid).one()
     return {
         "user_id": obj.user_id,
         "name": obj.name,
@@ -123,7 +123,7 @@ def increase_offset_in_db(int_):
 
 def get_likes_list(uid):
     likes_list = []
-    response = s.query(Liked).filter_by(user_id=str(uid)).all()
+    response = s.query(Liked).filter_by(user_id=uid).all()
     for item in response:
         user = {"id": item.liked_user_id,
                 "name": item.name,
@@ -132,7 +132,7 @@ def get_likes_list(uid):
     return likes_list
 
 def is_banned_inDB(uid, id_for_check) -> bool:
-    a = s.query(Banned).filter_by(user_id=str(uid), banned_user_id=str(id_for_check)).all()
+    a = s.query(Banned).filter_by(user_id=uid, banned_user_id=id_for_check).all()
     print(a)
     if len(a) > 0:
         return True
