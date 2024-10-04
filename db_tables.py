@@ -41,6 +41,8 @@ class Liked(Base):
 
     user_id = Column(Text, ForeignKey("user.user_id"), primary_key=True, nullable=False)
     liked_user_id = Column(Text, primary_key=True, nullable=False)
+    name = Column(Text)
+    photo = Column(Text)
 
     PrimaryKeyConstraint("user_id", "liked_user_id", name="uq_like")
 

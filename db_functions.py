@@ -40,14 +40,21 @@ def update_prompt(user_id, **inf):
         print(f"строка {key} обновлена. новое значение {value}")
         s.commit()
 
-def like(user_id, liked_user_id):
+def like(user_id, liked_user_id, name, photo):
     try:
-        s.add(Liked(user_id=user_id, liked_user_id=liked_user_id))
+        s.add(Liked(user_id=user_id, liked_user_id=liked_user_id, name=name, photo=photo))
         s.commit()
         print("Лайк добавлен")
-
+        return True
     except IntegrityError:
         print("Лайк уже существует")
+        return True
+    except PendingRollbackError:
+        print("Лайк уже существует")
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
 def unlike(user_id, user_for_unlike):
     s.delete(Liked(user_id=user_id, liked_user_id=user_for_unlike))
@@ -88,7 +95,7 @@ def get_prompt(user_id) -> dict:
     _["offset"] = obj.offset
     return _
 
-def is_user_exist(user_for_check:int) -> bool:
+def is_user_exist(user_for_check: int) -> bool:
     try:
         assert s.query(User).filter_by(user_id=str(user_for_check)).first()
         print("пользователь есть")
@@ -113,19 +120,16 @@ def increase_offset_in_db(int_):
     _.offset = int_
     s.commit()
 
+def get_likes_list(uid):
+    likes_list = []
+    response = s.query(Liked).filter_by(user_id=str(uid)).all()
+    for item in response:
+        user = {"id": item.liked_user_id,
+                "name": item.name,
+                "photo": item.photo}
+        likes_list.append(user)
+    return likes_list
+
 
 if __name__ == "__main__":
     pass
-    # print(get_user_inf_from_db("458719538"))
-    # print(get_user_inf_from_db(458719538))
-    # print(is_prompt_exist(458719538))
-    # print(is_user_exist(6))
-    # # user = User(user_id=458719538, name="Александр валерьевич", city="москва", age=26, gender=2)
-    # # create_user(user)
-    # print(is_user_exist(458719538))
-    # prompt = UserPrompt(user_id=1, age_for_search=26, city_for_search="москва", gender_for_search=1)
-    # add_prompt(prompt)
-    # s.commit()
-    # print(get_prompt().city_for_search)
-    # print(get_prompt().age_for_search)
-    # print(get_prompt().gender_for_search)

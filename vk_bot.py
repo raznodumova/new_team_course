@@ -1,6 +1,4 @@
-# да ебаный рот этого казино, как блять запушить?
-import vk_api
-from bot_func import VkBotLongPoll, VkBotEventType
+from bot_func import VkBotEventType
 import configparser
 from phrase_dict import phrase_dict
 from bot_func import BotFunc, longpoll, group_session
@@ -21,7 +19,7 @@ def main():
                 new_user = BotFunc(user_id)
                 phrase_dict.get(text.lower())(new_user, user_id)
 
-            except Exception as e:
+            except Exception as e:  # если что то пошло не по плану предалагаем начать с начала
                 print(e)
                 print("не понятное сообщение")
                 group_session.get_api().messages.send(user_id=user_id,
