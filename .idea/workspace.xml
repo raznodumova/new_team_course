@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cab7440b-75dc-4de2-8b1e-4536a5b4acdc" name="Changes" comment="pre_alfa v.0.02(add ban and unlike func)">
-      <change beforePath="$PROJECT_DIR$/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/config.ini" afterDir="false" />
+    <list default="true" id="cab7440b-75dc-4de2-8b1e-4536a5b4acdc" name="Changes" comment="pre_alfa v.0.03">
+      <change afterPath="$PROJECT_DIR$/help_files/config.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/db_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/db_tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db_tables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,9 +44,16 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\рс\Desktop\проекты\еще одна курсовая крыс\tests" />
+      <recent name="C:\Users\рс\Desktop\проекты\еще одна курсовая крыс\help_files" />
+      <recent name="C:\Users\рс\Desktop\проекты\еще одна курсовая крыс\db" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-      <module name="еще одна курсовая крыс" />
+      <module name="vk_dating_bot" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -61,8 +74,8 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="vk_bot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="еще одна курсовая крыс" />
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="vk_dating_bot" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -74,7 +87,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/vk_bot.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\рс\Desktop\проекты\еще одна курсовая крыс\main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -85,7 +98,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.vk_bot" />
+        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -169,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728035240373</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="pre_alfa v.0.03">
+      <option name="closed" value="true" />
+      <created>1728036365425</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1728036365425</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -181,6 +202,7 @@
     <MESSAGE value="working pre_alfa version 0.01" />
     <MESSAGE value="pre_alfa v.0.02(add ban func)" />
     <MESSAGE value="pre_alfa v.0.02(add ban and unlike func)" />
-    <option name="LAST_COMMIT_MESSAGE" value="pre_alfa v.0.02(add ban and unlike func)" />
+    <MESSAGE value="pre_alfa v.0.03" />
+    <option name="LAST_COMMIT_MESSAGE" value="pre_alfa v.0.03" />
   </component>
 </project>

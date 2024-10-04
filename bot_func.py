@@ -171,10 +171,8 @@ class BotFunc:
                     self.next_(uid)
         except Exception as e:
             print(e)
-            # self.send_message(message="приступим?", keyb=keyb_go.get_keyboard())
             self.search()
             self.next_(uid)
-            # self.wait_for_response()
 
     def change_user_inf(self, *args):
         self.send_message("я пока не знаю этой команды", keyb_user_profile.get_keyboard())

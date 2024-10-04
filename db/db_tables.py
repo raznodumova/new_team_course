@@ -1,8 +1,12 @@
+import configparser
+
 from sqlalchemy import create_engine, Column, Text, Integer, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import declarative_base, relationship
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 Base = declarative_base()
-engine = create_engine("postgresql://postgres:admin@localhost/vk_bots")
+engine = create_engine(config["DB"]["engine"])
 
 
 def create_tables():

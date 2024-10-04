@@ -141,6 +141,7 @@ def is_banned_inDB(uid, id_for_check) -> bool:
 
 
 if __name__ == "__main__":
+    pass
     # unlike(458719538, 681331570)
-    ban(458719538, 472579328)
+    # ban(458719538, 472579328)
     # print(is_banned_inDB(uid=458719538, id_for_check=472579328))
